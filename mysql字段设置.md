@@ -6,8 +6,11 @@ id,  电视集数，电视名称， 电视清晰度，国家， 电视格式， 
 
 ```
 DROP TABLE IF EXISTS series;
+DROP TABLE IF EXISTS movies;
 create table series
 (
+  id int not null AUTO_INCREMENT,
+  pid varchar(200),
   name    VARCHAR(200),
   magent  VARCHAR(1024),
   status    INT,
@@ -18,8 +21,8 @@ create table series
   create_at    DATE,
   update_at    DATE,
   num int,
-  PRIMARY KEY (num),
-  CONSTRAINT FK_movie FOREIGN KEY (num) REFERENCES movies(id)
+  PRIMARY KEY (id),
+  CONSTRAINT FK_movie FOREIGN KEY (name) REFERENCES movies(name)
 ) DEFAULT CHARSET=utf8;
 ```
 
@@ -31,16 +34,19 @@ id, 电视名称，主演，导演， 地区， 年份， 时长，更新时间�
 
 ```
 DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS series;
+DROP TABLE IF EXISTS movies;
 create table movies
 (
   id     int not null AUTO_INCREMENT,
+  pid varchar(200),
   name    VARCHAR(200),
   url  VARCHAR(1024),
   year    VARCHAR(8),
   status int,
   img VARCHAR(1024),
   descr  text,
-  performer VARCHAR(200),
+  performer VARCHAR(1024),
   lang VARCHAR(10),
   area VARCHAR(20),
   pubtime DATE,
@@ -49,7 +55,23 @@ create table movies
   UNIQUE key uq(name),
   PRIMARY KEY (id)
 ) AUTO_INCREMENT=0  DEFAULT CHARSET=utf8;
-
+create table series
+(
+  id int not null AUTO_INCREMENT,
+  pid varchar(200),
+  name    VARCHAR(200),
+  magent  VARCHAR(1024),
+  status    INT,
+  hd VARCHAR(20),
+  lang VARCHAR(4),
+  area VARCHAR(20),
+  format VARCHAR(20),
+  create_at    DATE,
+  update_at    DATE,
+  num int,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_movie FOREIGN KEY (name) REFERENCES movies(name)
+) DEFAULT CHARSET=utf8;
 
 
 create table movies
@@ -64,6 +86,12 @@ create table movies
 
 ```
 ALTER TABLE movies ADD desc varchar(2048);
+```
+
+查询
+
+```
+select num,magent from series where num<4 and name="隐秘而伟大" ORDER BY num ASC
 ```
 
 
